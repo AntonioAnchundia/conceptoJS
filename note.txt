@@ -1,0 +1,161 @@
+/*Fundamentos de JavaScript*/
+
+**Nombramiento de variables 
+    Existen dos limitaciones de nombre de variables en JavaScript:
+
+    1. El nombre únicamente puede incluir letras, dígitos, o los símbolos $ y _.
+    2. El primer carácter no puede ser un dígito.
+
+**Tipos de Datos 
+ -> Number: Tiene Infinity, -Infinity, NaN (representa un error de cálculo. Puede ser incorrecta o indefinida)
+ -> Operador typeof: Devuelve el tipo de dato del operando. 
+
+**Operadores 
+ -> Incremeto/Decremento: prefijo "i++" Devuelve el valor antes de incrementar
+                          sufijo "++i" Devuelve el valor incrementado inmediatamente
+
+**Operador Ternario '?'
+ -> Sintaxis: let result = condition ? value1 : value2;
+
+**Funciones CallBack
+  -> Las funcionas callBack son como un if else, la diferencia que es con funciones Ejemplo: 
+  -> Codigo 
+        function ask(question, yes, no) {
+        if (confirm(question)) yes()
+        else no();
+        }
+
+        function showOk() {
+        alert( "Estás de acuerdo." );
+        }
+
+        function showCancel() {
+        alert( "Cancelaste la ejecución." );
+        }
+
+        // uso: las funciones showOk, showCancel son pasadas como argumentos de ask
+        ask("Estás de acuerdo?", showOk, showCancel);
+ -> Esto se puede mejorar haciendo un solo ask, recordar que ask solo es el nombre de la función
+
+
+ /*Objetos: lo básico*/
+ **Objetos**
+  -> Acceso a las propiedades de objetos es:
+  -> Codigo
+    let user = {
+      name: "John",
+      age: 30,
+    } 
+    alert(user[name]);
+
+**Atajo para valores de propiedad
+  -> Codigo: 
+    function makeUser(name, age) {
+      return {
+        name, // igual que name:name
+        age,  // igual que age:age
+      };
+    }
+
+**Propiedad existente, el operador "in"
+  -> Codigo: 
+    let user = { name: "John", age: 30 };
+
+    alert( "age" in user );    // mostrará "true", porque user.age sí existe
+    alert( "blabla" in user ); // mostrará false, porque user.blabla no existe
+
+**Bucle "for in"
+  -> Codigo
+    let user = {
+      name: "John",
+      age: 30,
+      isAdmin: true
+    };
+
+    for (let key in user) {
+      // claves
+      alert( key );  // name, age, isAdmin
+      // valores de las claves
+      alert( user[key] ); // John, 30, true
+    }     
+
+**Clonación y mezla, Object.assign
+  -> Primera forma de copiar: 
+    let user = {
+      name: "John",
+      age: 30
+    };
+    let clone = {}; // el nuevo objeto vacío
+    // copiemos todas las propiedades de user en él
+    for (let key in user) {
+      clone[key] = user[key];
+    }
+    // ahora clone es un objeto totalmente independiente con el mismo contenido
+    clone.name = "Pete"; // cambiamos datos en él
+    alert( user.name ); // John aún está en el objeto original
+
+  -> Segunda forma de copiar con Object.assign
+  -> Sintaxis: Object.assign(dest, ...sources)
+  -> Codigo:
+    let user = {
+      name: "John",
+      age: 30
+    };
+    let clone = Object.assign({}, user);
+    alert(clone.name); // John
+    alert(clone.age); // 30
+
+**Clonación anidada
+  -> No se puede, copiar con Object.assign porque daria un error en el momento de la copia 
+  -> Forma de clonacion anidada, codigo: 
+    let user = {
+      name: "John",
+      sizes: {
+        height: 182,
+        width: 50
+      }
+    };
+    let clone = structuredClone(user);
+    alert( user.sizes === clone.sizes ); // false, objetos diferentes
+    // ahora user y clone están totalmente separados
+    user.sizes.width = 60;    // cambia una propiedad de un lugar
+    alert(clone.sizes.width); // 50, no están relacionados
+
+    -> El metodo structuredClone() puede clonar tipos de datos, objetos, arrays, valores primitivos, pero si se quiere copiar el objeto y dentro 
+    -> tiene una función no se podrá, debemos buscar otra forma por ejemplo _.cloneDeep(obj) de la librería JavaScript lodash.
+
+**Método del objeto "this"
+  -> Forma abreviada para los metodos. Código:
+   user = {
+    sayHi() {   // igual que "sayHi: function(){...}"
+      alert("Hello");
+    }
+  };
+
+  -> Las funciones flechas no tienen this
+    -> Ten en cuenta que las funciones de flecha son especiales: ellas no tienen this. Cuando this es accedido dentro de una función de flecha, su valor es tomado desde el exterior.
+    //Revisar este objeto en uno de los ejercicios para tener conocimiento en el de calculadora 
+
+**Constructor, operador "new"  
+  -> Código
+    function User(name) {
+      this.name = name;
+      this.sayHi = function() {
+        alert( "Mi nombre es: " + this.name );
+      };
+    }
+    let john = new User("John");
+    john.sayHi(); // Mi nombre es: John
+
+**Encadenamiento opcional '?'
+  -> Para verificar si existe una propiedad o metodo
+      obj?.prop – devuelve obj.prop si obj existe, si no, undefined.
+      obj?.[prop] – devuelve obj[prop] si obj existe, si no, undefined.
+      obj.method?.() – llama a obj.method() si obj.method existe, si no devuelve undefined.
+
+
+
+
+
+
+
